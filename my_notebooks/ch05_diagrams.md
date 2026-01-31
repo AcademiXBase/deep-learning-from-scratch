@@ -126,6 +126,57 @@ flowchart RL
 $$\frac{\partial z}{\partial t} = \frac{\partial z}{\partial z} \frac{\partial z}{\partial t} = 1・2t = 2(x+y)$$
 $$\frac{\partial z}{\partial x} = \frac{\partial z}{\partial z} \frac{\partial z}{\partial t} \frac{\partial t}{\partial x} = 2(x+y)・1 = 2(x+y)$$
 
+## 5.3 逆伝播
+
+逆伝播の仕組みについて説明
+
+### 5.3.1 加算ノードの逆伝播
+
+z = x + y の式について考える \
+加算ノードの逆伝播 ... (1を乗算するだけなので、) 入力された値をそのまま次のノードへ流すだけ
+
+順伝播：
+
+```mermaid
+flowchart LR
+    A["x"] -->|x| C(("＋"))
+    B["y"] -->|y| C
+    C -->|z| D["z"]
+```
+
+逆伝播：
+
+```mermaid
+flowchart RL
+    C(("＋")) --> |1・∂L/∂z| A["x"]
+    C --> |1・∂L/∂z| B["y"]
+    D["z"] --> |∂L/∂z| C
+```
+
+※「zに対するLの微分」としているのは、最終的にLという値を出力する大きな計算グラフを想定している為
+
+### 5.3.2 乗算ノードの逆伝播
+
+z = xy の式について考える \
+乗算の逆伝播 ... 上流の値に、順伝播の際の入力信号を"ひっくり返した値"を乗算して下流へ流す
+順伝播：
+
+```mermaid
+flowchart LR
+    A["x"] -->|x| C(("×"))
+    B["y"] -->|y| C
+    C -->|z| D["z"]
+```
+
+逆伝播：
+
+```mermaid
+flowchart RL
+    C(("×")) --> |y・∂L/∂z| A["x"]
+    C --> |x・∂L/∂z| B["y"]
+    D["z"] --> |∂L/∂z| C
+```
+
 ## 問いと計算グラフ
 
 ### 問1 リンゴ2個の買い物 (p.124)
