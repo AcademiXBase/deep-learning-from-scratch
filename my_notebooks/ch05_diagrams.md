@@ -1,5 +1,50 @@
 # Chapter 5: 誤差逆伝播法
 
+### 図5-6（5.2.1 計算グラフの逆伝播より）
+
+順伝播：
+
+```mermaid
+flowchart LR
+    A["<br>"] --> |x| B
+    B(("f")) --> |y| C["<br>"]
+```
+
+逆伝播：
+
+```mermaid
+flowchart RL
+    B(("f")) --> |E・∂y/∂x| A["<br>"]
+    C["<br>"] --> |E| B
+```
+
+※信号をEとする
+
+### 図5-7（5.2.3 連鎖律と計算グラフより）
+
+順伝播：
+
+```mermaid
+flowchart LR
+    A["x"] -->|x| C(("＋"))
+    B["y"] -->|y| C
+    C -->|t| D(("**2"))
+    D -->|z| F["z"]
+```
+
+逆伝播：
+
+```mermaid
+flowchart RL
+    C(("＋")) --> |∂z/∂x| A["x"]
+    C --> |y| B["y"]
+    D(("**2")) --> |∂z/∂t| C
+    F["z"] --> |∂z/∂z| D
+```
+
+$$\frac{\partial z}{\partial t} = \frac{\partial z}{\partial z} \frac{\partial z}{\partial t} = 1・2t = 2(x+y)$$
+$$\frac{\partial z}{\partial x} = \frac{\partial z}{\partial z} \frac{\partial z}{\partial t} \frac{\partial t}{\partial x} = 2(x+y)・1 = 2(x+y)$$
+
 ## 問いと計算グラフ
 
 ### 問1 リンゴ2個の買い物 (p.124)
