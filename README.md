@@ -29,23 +29,38 @@
 | `dataset` | データセット用のソースコード |
 | `notebooks` | 公式サンプルコードの Notebook 版 |
 | `my_notebooks` | 学習用に追加した Notebook |
+| `pyproject.toml` | uv で管理する依存関係 |
+| `uv.lock` | uv が生成するロックファイル |
 
 ## 必要な環境
 
 ソースコードを実行するには、次のソフトウェアとライブラリが必要です。
 
 - Python 3.x
+- uv
 - NumPy
 - Matplotlib
 - Jupyter Notebook または JupyterLab (`my_notebooks` を使う場合)
 
-最小構成で実行する場合は、次のようにインストールします。
+このリポジトリでは、Python 環境を uv で管理します。uv が未インストールの場合は、先にインストールしてください。
 
 ```bash
-python3 -m pip install numpy matplotlib jupyter
+python3 -m pip install uv
 ```
 
-Conda を使う場合は、同梱の `environment.yml` から環境を作成できます。
+その後、リポジトリのルートディレクトリで依存関係を同期します。
+
+```bash
+uv sync
+```
+
+Notebook から使うカーネルを登録する場合は、次のコマンドを実行します。
+
+```bash
+uv run python3 -m ipykernel install --user --name deep-learning-from-scratch --display-name "Python (uv: deep-learning-from-scratch)"
+```
+
+Conda を使いたい場合は、互換用に残している `environment.yml` から環境を作成できます。
 
 ```bash
 conda env create -f environment.yml
@@ -58,10 +73,10 @@ conda activate dezero
 
 ```bash
 cd ch01
-python3 man.py
+uv run python3 man.py
 
 cd ../ch05
-python3 train_neuralnet.py
+uv run python3 train_neuralnet.py
 ```
 
 MNIST などのデータセットは、必要に応じて `dataset` 配下のコードから自動で取得されます。
@@ -71,7 +86,13 @@ MNIST などのデータセットは、必要に応じて `dataset` 配下のコ
 リポジトリのルートディレクトリで Jupyter を起動します。
 
 ```bash
-jupyter notebook
+uv run jupyter notebook
+```
+
+JupyterLab を使う場合は、次のコマンドで起動できます。
+
+```bash
+uv run jupyter lab
 ```
 
 起動後、ブラウザから次のどちらかを開きます。
